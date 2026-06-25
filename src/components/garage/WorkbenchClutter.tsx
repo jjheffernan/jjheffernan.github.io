@@ -3,24 +3,22 @@ import { garage } from './materials'
 type ClutterItem = {
   position: [number, number, number]
   rotation?: [number, number, number]
-  type: 'mug' | 'cable' | 'wrench' | 'filament' | 'multimeter' | 'part' | 'spray' | 'helmet' | 'solder' | 'pliers'
+  type: 'mug' | 'cable' | 'wrench' | 'filament' | 'multimeter' | 'part' | 'spray' | 'solder' | 'pliers'
   scale?: number
 }
 
+/** Perimeter clutter — pushed to outer bench bounds; labeled interactables stay inward */
 const clutter: ClutterItem[] = [
-  { position: [-5.8, 0.08, 0.9], type: 'mug' },
-  { position: [-4.6, 0.06, -0.8], type: 'cable', rotation: [0, 0.8, 0] },
-  { position: [-5.45, 0.05, 1.05], type: 'wrench', rotation: [0, -0.4, Math.PI / 2] },
-  { position: [3.2, 0.1, 1.1], type: 'filament' },
-  { position: [4.8, 0.08, -0.5], type: 'multimeter', rotation: [0, -0.6, 0] },
-  { position: [5.6, 0.06, 0.7], type: 'spray' },
-  { position: [-5.75, 0.07, -0.55], type: 'part', rotation: [0.2, 0.5, 0] },
-  { position: [3.85, 0.05, -0.75], type: 'cable', rotation: [0, -1.2, 0] },
-  { position: [1.55, 0.06, 1.22], type: 'solder' },
-  { position: [2.15, 0.05, 1.12], type: 'pliers', rotation: [0, 0.3, 0] },
-  { position: [6.2, 0.55, -2.2], type: 'helmet', rotation: [0, -0.5, 0] },
-  { position: [-6.5, 0.06, -1.1], type: 'part', rotation: [0, 1.1, 0.1] },
-  { position: [4.2, 0.07, 0.2], type: 'wrench', rotation: [Math.PI, 0.2, Math.PI / 2] },
+  { position: [-6.25, 0.08, 0.82], type: 'mug' },
+  { position: [-6.05, 0.06, -0.88], type: 'cable', rotation: [0, 0.8, 0] },
+  { position: [-5.35, 0.05, 1.18], type: 'pliers', rotation: [0, 0.3, 0] },
+  { position: [6.05, 0.1, 0.78], type: 'filament' },
+  { position: [6.25, 0.08, -0.62], type: 'multimeter', rotation: [0, -0.6, 0] },
+  { position: [5.55, 0.06, 1.18], type: 'spray' },
+  { position: [-6.4, 0.07, -0.18], type: 'part', rotation: [0, 1.1, 0.1] },
+  { position: [5.85, 0.05, -1.02], type: 'cable', rotation: [0, -1.2, 0] },
+  { position: [2.05, 0.06, 1.42], type: 'solder' },
+  { position: [6.15, 0.07, 0.18], type: 'wrench', rotation: [Math.PI, 0.2, Math.PI / 2] },
 ]
 
 function ClutterMesh({ item }: { item: ClutterItem }) {
@@ -101,12 +99,6 @@ function ClutterMesh({ item }: { item: ClutterItem }) {
           <meshStandardMaterial color="#c05621" metalness={0.6} roughness={0.35} />
         </mesh>
       )}
-      {item.type === 'helmet' && (
-        <mesh>
-          <sphereGeometry args={[0.38, 16, 16, 0, Math.PI * 2, 0, Math.PI / 1.8]} />
-          <meshStandardMaterial color="#f6e05e" roughness={0.55} metalness={0.1} />
-        </mesh>
-      )}
     </group>
   )
 }
@@ -117,15 +109,11 @@ export function WorkbenchClutter() {
       {clutter.map((item, i) => (
         <ClutterMesh key={i} item={item} />
       ))}
-      {/* scattered screws */}
-      {Array.from({ length: 18 }, (_, i) => (
+      {/* screws — far front-right corner */}
+      {Array.from({ length: 10 }, (_, i) => (
         <mesh
           key={`screw-${i}`}
-          position={[
-            -5.8 + (i % 6) * 2.1,
-            0.01,
-            -1.05 + Math.floor(i / 6) * 0.55 + (i % 3) * 0.18,
-          ]}
+          position={[5.35 + (i % 5) * 0.22, 0.01, 1.18 + Math.floor(i / 5) * 0.18]}
           rotation={[Math.PI / 2, i * 0.7, 0]}
         >
           <cylinderGeometry args={[0.012, 0.012, 0.025, 6]} />

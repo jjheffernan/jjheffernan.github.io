@@ -17,8 +17,8 @@ export function CameraPanControls() {
         <button
           type="button"
           className="camera-pan-btn glass"
-          onClick={panLeft}
-          disabled={atMin}
+          onClick={panRight}
+          disabled={atMax}
           aria-label="Peek left"
         >
           ◀
@@ -26,8 +26,8 @@ export function CameraPanControls() {
         <button
           type="button"
           className="camera-pan-btn glass"
-          onClick={panRight}
-          disabled={atMax}
+          onClick={panLeft}
+          disabled={atMin}
           aria-label="Peek right"
         >
           ▶

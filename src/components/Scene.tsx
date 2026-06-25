@@ -1,6 +1,7 @@
 import { ContactShadows } from '@react-three/drei'
 import { GarageEnvironment } from './garage/GarageEnvironment'
 import { WorkbenchClutter } from './garage/WorkbenchClutter'
+import { WorkbenchSurface } from './garage/WorkbenchSurface'
 import { DevStation } from './garage/DevStation'
 import { PartsBins } from './garage/PartsBins'
 import { ProjectArtifacts } from './garage/ProjectArtifacts'
@@ -27,6 +28,7 @@ export function Scene() {
       <WallPanels />
 
       <group position={[0, BENCH_Y, 0]}>
+        <WorkbenchSurface />
         <WorkbenchClutter />
         <RetroProps />
         <DevStation />

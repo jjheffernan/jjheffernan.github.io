@@ -4,6 +4,7 @@ import { skillCategories } from '../../data/profile'
 import { useInteraction } from '../../context/InteractionContext'
 import { Interactable } from '../Interactable'
 import { garage } from './materials'
+import { PARTS_BIN_BY_ID } from './workbenchLayout'
 
 type BinProps = {
   id: string
@@ -33,12 +34,10 @@ function PartsBin({ id, title, position, color }: BinProps) {
             metalness={0.1}
           />
         </mesh>
-        {/* label strip */}
         <mesh position={[0, 0.22, 0.27]}>
           <boxGeometry args={[0.5, 0.08, 0.02]} />
           <meshStandardMaterial color={garage.woodDark} roughness={0.9} />
         </mesh>
-        {/* dividers / parts inside */}
         {[-0.15, 0.15].map((x) => (
           <mesh key={x} position={[x, 0.08, 0]}>
             <boxGeometry args={[0.08, 0.14, 0.35]} />
@@ -56,14 +55,14 @@ function PartsBin({ id, title, position, color }: BinProps) {
 }
 
 export function PartsBins() {
-  const bins = useMemo(() => {
-    const startX = -5.1
-    const gap = 1.28
-    return skillCategories.map((category, i) => ({
-      ...category,
-      position: [startX + i * gap, 0.02, -0.28] as [number, number, number],
-    }))
-  }, [])
+  const bins = useMemo(
+    () =>
+      skillCategories.map((category) => ({
+        ...category,
+        position: PARTS_BIN_BY_ID[category.id] ?? ([-5.85, 0.02, 0] as [number, number, number]),
+      })),
+    [],
+  )
 
   return (
     <group>

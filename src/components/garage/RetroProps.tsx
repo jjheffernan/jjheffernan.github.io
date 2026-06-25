@@ -2,6 +2,12 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { KenneyProp } from './KenneyProp'
 import { retro, toonProps } from './retroMaterials'
+import {
+  CARTRIDGE_POSITIONS,
+  RETRO_AIR_HOCKEY_POS,
+  RETRO_ARCADE_POS,
+  RETRO_PINBALL_POS,
+} from './workbenchLayout'
 import type { Mesh, MeshStandardMaterial } from 'three'
 
 function ArcadeGlow() {
@@ -14,8 +20,8 @@ function ArcadeGlow() {
   })
 
   return (
-    <mesh ref={screen} position={[0, 0.58, 0.2]} rotation={[0, 0, 0]}>
-      <planeGeometry args={[0.2, 0.16]} />
+    <mesh ref={screen} position={[0, 0.52, 0.18]} rotation={[0, 0, 0]}>
+      <planeGeometry args={[0.18, 0.14]} />
       <meshStandardMaterial color="#33ff66" emissive="#134e2a" emissiveIntensity={0.5} flatShading />
     </mesh>
   )
@@ -43,14 +49,14 @@ function Cartridge({ position, color }: { position: [number, number, number]; co
 export function RetroProps() {
   return (
     <group>
-      <group position={[-2.85, 0, 1.05]} rotation={[0, 0.32, 0]}>
-        <KenneyProp model="arcade-machine" scale={0.88} />
+      <group position={RETRO_ARCADE_POS} rotation={[0, 0.25, 0]}>
+        <KenneyProp model="arcade-machine" scale={0.72} />
         <ArcadeGlow />
       </group>
-      <KenneyProp model="pinball" position={[-4.65, 0, 0.5]} rotation={[0, 0.55, 0]} scale={0.48} />
-      <KenneyProp model="air-hockey" position={[-1.35, 0, 1.28]} rotation={[0, -0.18, 0]} scale={0.62} />
-      <Cartridge position={[0.38, 0.04, 1.12]} color={retro.gcPink} />
-      <Cartridge position={[0.58, 0.04, 0.98]} color={retro.gcMint} />
+      <KenneyProp model="pinball" position={RETRO_PINBALL_POS} rotation={[0, 0.4, 0]} scale={0.4} />
+      <KenneyProp model="air-hockey" position={RETRO_AIR_HOCKEY_POS} rotation={[0, -0.12, 0]} scale={0.52} />
+      <Cartridge position={CARTRIDGE_POSITIONS[0]} color={retro.gcPink} />
+      <Cartridge position={CARTRIDGE_POSITIONS[1]} color={retro.gcMint} />
     </group>
   )
 }

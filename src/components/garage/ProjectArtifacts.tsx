@@ -4,13 +4,14 @@ import { projects } from '../../data/profile'
 import { useInteraction } from '../../context/InteractionContext'
 import { Interactable } from '../Interactable'
 import { garage } from './materials'
+import { PROJECT_POSITIONS } from './workbenchLayout'
 
 type ArtifactProps = {
   id: string
   title: string
   position: [number, number, number]
   rotation?: [number, number, number]
-  variant: 'django' | 'rust' | 'rustpi' | 'arduino'
+  variant: 'django' | 'camera' | 'rustpi' | 'arduino'
 }
 
 function ProjectArtifact({ id, title, position, rotation = [0, 0, 0], variant }: ArtifactProps) {
@@ -36,19 +37,37 @@ function ProjectArtifact({ id, title, position, rotation = [0, 0, 0], variant }:
             </mesh>
           </group>
         )}
-        {variant === 'rust' && (
-          <group>
+        {variant === 'camera' && (
+          <group position={[0, 0.14, 0]}>
             <mesh castShadow>
-              <boxGeometry args={[0.62, 0.42, 0.48]} />
-              <meshStandardMaterial color={garage.metalDark} metalness={0.5} roughness={0.55} />
+              <boxGeometry args={[0.4, 0.26, 0.2]} />
+              <meshStandardMaterial color="#2d3748" roughness={0.55} metalness={0.25} />
             </mesh>
-            <mesh position={[0, 0.12, 0.2]}>
-              <boxGeometry args={[0.5, 0.08, 0.02]} />
+            <mesh position={[0, 0.16, -0.02]} castShadow>
+              <boxGeometry args={[0.16, 0.09, 0.12]} />
+              <meshStandardMaterial color="#1a202c" roughness={0.7} />
+            </mesh>
+            <mesh position={[0, 0.03, 0.14]} rotation={[Math.PI / 2, 0, 0]} castShadow>
+              <cylinderGeometry args={[0.09, 0.11, 0.16, 16]} />
+              <meshStandardMaterial color="#111" metalness={0.65} roughness={0.35} />
+            </mesh>
+            <mesh position={[0, 0.03, 0.23]} rotation={[0, 0, 0]}>
+              <circleGeometry args={[0.07, 20]} />
               <meshStandardMaterial
-                color={garage.rust}
-                emissive="#7c2d12"
-                emissiveIntensity={active ? 0.6 : 0.25}
+                color="#2c5282"
+                emissive="#1a365d"
+                emissiveIntensity={active ? 0.55 : 0.25}
+                metalness={0.4}
+                roughness={0.2}
               />
+            </mesh>
+            <mesh position={[0.14, 0.04, 0.06]}>
+              <boxGeometry args={[0.05, 0.03, 0.03]} />
+              <meshStandardMaterial color={garage.metal} metalness={0.85} roughness={0.25} />
+            </mesh>
+            <mesh position={[-0.12, 0.1, 0.02]} rotation={[0, 0, 0.3]}>
+              <boxGeometry args={[0.04, 0.02, 0.06]} />
+              <meshStandardMaterial color="#c53030" roughness={0.6} />
             </mesh>
           </group>
         )}
@@ -108,27 +127,28 @@ function ProjectArtifact({ id, title, position, rotation = [0, 0, 0], variant }:
   )
 }
 
-const variants: ArtifactProps['variant'][] = ['django', 'rust', 'rustpi', 'arduino']
+const VARIANT_BY_TITLE: Record<string, ArtifactProps['variant']> = {
+  'Django Auto Forum': 'django',
+  'jheff.media-site': 'camera',
+  'RustPi Monorepo': 'rustpi',
+  'Arduino Projects': 'arduino',
+}
 
 export function ProjectArtifacts() {
-  const artifacts = useMemo(() => {
-    const layouts: Array<[number, number, number, number]> = [
-      [-4.7, 0.02, 0.12, 0.35],
-      [2.75, 0.03, -0.42, -0.25],
-      [4.45, 0.02, 0.28, 0.55],
-      [-2.05, 0.025, 0.92, -0.12],
-    ]
-    return projects.map((project, i) => {
-      const [x, y, z, ry] = layouts[i] ?? [0, 0.1, 0, 0]
-      return {
-        id: `project-${i}`,
-        title: project.title,
-        position: [x, y, z] as [number, number, number],
-        rotation: [0, ry, 0] as [number, number, number],
-        variant: variants[i] ?? 'arduino',
-      }
-    })
-  }, [])
+  const artifacts = useMemo(
+    () =>
+      projects.map((project, i) => {
+        const [x, y, z, ry] = PROJECT_POSITIONS[i] ?? [4, 0.02, 0, 0]
+        return {
+          id: `project-${i}`,
+          title: project.title,
+          position: [x, y, z] as [number, number, number],
+          rotation: [0, ry, 0] as [number, number, number],
+          variant: VARIANT_BY_TITLE[project.title] ?? 'arduino',
+        }
+      }),
+    [],
+  )
 
   return (
     <group>
