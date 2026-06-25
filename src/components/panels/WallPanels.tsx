@@ -1,7 +1,7 @@
 import { useRef, type CSSProperties } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html, useCursor } from '@react-three/drei'
-import { usePanel, type PanelId } from '../../context/PanelContext'
+import { usePanel } from '../../context/PanelContext'
 import { WALL_PANELS } from './panelMeta'
 import type { Group } from 'three'
 
@@ -30,10 +30,10 @@ function WallPanel3D({
     group.current.scale.setScalar(next)
   })
 
-  const onPointer = (panelId: PanelId) => ({
+  const pointerHandlers = {
     onPointerOver: (e: { stopPropagation: () => void }) => {
       e.stopPropagation()
-      setHoveredPanel(panelId)
+      setHoveredPanel(id)
     },
     onPointerOut: (e: { stopPropagation: () => void }) => {
       e.stopPropagation()
@@ -41,59 +41,80 @@ function WallPanel3D({
     },
     onClick: (e: { stopPropagation: () => void }) => {
       e.stopPropagation()
-      openPanel(panelId)
+      openPanel(id)
     },
-  })
+  }
+
+  const fillOpacity = isActive ? 0.42 : isHovered ? 0.78 : 0.65
+  const sheenOpacity = isActive ? 0.2 : isHovered ? 0.38 : 0.28
 
   return (
     <group ref={group} position={position} rotation={rotation}>
       {/* peg hook */}
-      <mesh position={[0, height / 2 + 0.1, 0.02]}>
-        <torusGeometry args={[0.055, 0.012, 8, 16, Math.PI]} />
+      <mesh position={[0, height / 2 + 0.05, 0.02]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.04, 0.01, 8, 16, Math.PI]} />
         <meshStandardMaterial color="#8a8a95" metalness={0.85} roughness={0.25} />
       </mesh>
-      <mesh position={[0, height / 2 + 0.02, 0.02]}>
-        <boxGeometry args={[0.025, 0.14, 0.025]} />
+      <mesh position={[0, height / 2 + 0.01, 0.02]}>
+        <boxGeometry args={[0.02, 0.08, 0.02]} />
         <meshStandardMaterial color="#6a6a75" metalness={0.8} roughness={0.3} />
       </mesh>
 
-      <group {...onPointer(id)}>
-        {/* panel frame */}
-        <mesh castShadow>
-          <boxGeometry args={[width, height, 0.05]} />
-          <meshPhysicalMaterial
-            color="#1a1030"
-            transparent
-            opacity={isActive ? 0.35 : 0.88}
-            roughness={0.25}
-            metalness={0.15}
-            emissive={accent}
-            emissiveIntensity={isHovered ? 0.35 : isActive ? 0.08 : 0.12}
-          />
-        </mesh>
-        {/* glass face */}
-        <mesh position={[0, 0, 0.028]}>
-          <planeGeometry args={[width - 0.1, height - 0.1]} />
-          <meshPhysicalMaterial
-            color="#6b5ce7"
-            transparent
-            opacity={isActive ? 0.15 : 0.45}
-            roughness={0.1}
-            metalness={0.05}
-            emissive={accent}
-            emissiveIntensity={isHovered ? 0.25 : 0.08}
-          />
-        </mesh>
-        {/* bezel */}
-        <mesh position={[0, 0, 0.032]}>
-          <boxGeometry args={[width - 0.04, height - 0.04, 0.008]} />
-          <meshBasicMaterial color={accent} transparent opacity={isHovered ? 0.5 : 0.28} wireframe />
-        </mesh>
+      {/* panel frame backing */}
+      <mesh castShadow>
+        <boxGeometry args={[width, height, 0.05]} />
+        <meshStandardMaterial
+          color="#120a22"
+          roughness={0.35}
+          metalness={0.12}
+          emissive={accent}
+          emissiveIntensity={isHovered ? 0.22 : isActive ? 0.06 : 0.1}
+        />
+      </mesh>
 
-        {(isHovered || isActive) && (
-          <pointLight color={accent} intensity={isActive ? 0.4 : 0.9} distance={2.5} position={[0, 0, 0.2]} />
-        )}
-      </group>
+      {/* solid filled face — visible + clickable */}
+      <mesh position={[0, 0, 0.028]} {...pointerHandlers}>
+        <planeGeometry args={[width - 0.08, height - 0.08]} />
+        <meshPhysicalMaterial
+          color="#1a1030"
+          transparent
+          opacity={fillOpacity}
+          roughness={0.18}
+          metalness={0.08}
+          emissive={accent}
+          emissiveIntensity={isHovered ? 0.28 : isActive ? 0.1 : 0.14}
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* glass sheen layer */}
+      <mesh position={[0, 0, 0.032]}>
+        <planeGeometry args={[width - 0.14, height - 0.14]} />
+        <meshPhysicalMaterial
+          color="#8b7cf8"
+          transparent
+          opacity={sheenOpacity}
+          roughness={0.08}
+          metalness={0.05}
+          emissive="#6b5ce7"
+          emissiveIntensity={isHovered ? 0.15 : 0.06}
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* solid accent border */}
+      <mesh position={[0, 0, 0.034]}>
+        <planeGeometry args={[width - 0.04, height - 0.04]} />
+        <meshBasicMaterial color={accent} transparent opacity={isHovered ? 0.45 : 0.3} />
+      </mesh>
+      <mesh position={[0, 0, 0.035]}>
+        <planeGeometry args={[width - 0.12, height - 0.12]} />
+        <meshBasicMaterial color="#0a0612" transparent opacity={0.55} />
+      </mesh>
+
+      {(isHovered || isActive) && (
+        <pointLight color={accent} intensity={isActive ? 0.4 : 0.9} distance={2.5} position={[0, 0, 0.2]} />
+      )}
 
       <Html
         position={[0, 0, 0.06]}
