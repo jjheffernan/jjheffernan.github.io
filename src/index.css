@@ -158,11 +158,14 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 0.15rem;
   padding: 0.35rem 0.5rem;
   border: 2px solid var(--panel-accent, var(--accent-2));
   background: rgba(10, 6, 18, 0.88);
-  min-width: 3.5rem;
+  width: 4.75rem;
+  min-height: 2.75rem;
+  text-align: center;
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 

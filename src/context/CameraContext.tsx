@@ -25,11 +25,11 @@ export function CameraProvider({ children }: { children: ReactNode }) {
   const [panAngle, setPanAngle] = useState(0)
 
   const panLeft = useCallback(
-    () => setPanAngle((a) => Math.min(PAN_MAX, a + PAN_STEP)),
+    () => setPanAngle((a) => Math.max(PAN_MIN, a - PAN_STEP)),
     [],
   )
   const panRight = useCallback(
-    () => setPanAngle((a) => Math.max(PAN_MIN, a - PAN_STEP)),
+    () => setPanAngle((a) => Math.min(PAN_MAX, a + PAN_STEP)),
     [],
   )
   const resetPan = useCallback(() => setPanAngle(0), [])
