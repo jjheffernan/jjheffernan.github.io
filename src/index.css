@@ -208,32 +208,46 @@ button {
   pointer-events: auto;
 }
 
-.panel-modal {
+.panel-modal-shell {
   position: fixed;
+  inset: 0;
   z-index: 32;
-  left: 50%;
-  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1rem 2.5rem;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.panel-modal-shell.is-open {
+  visibility: visible;
+}
+
+.panel-modal {
+  position: relative;
+  left: auto;
+  top: auto;
   width: min(680px, calc(100vw - 2rem));
-  max-height: min(88vh, 900px);
-  transform: translate(-50%, -46%) scale(0.72) rotateX(8deg);
-  transform-origin: center top;
+  max-height: 100%;
+  transform: scale(0.92);
+  transform-origin: center center;
   opacity: 0;
   pointer-events: none;
   overflow: hidden;
   transition:
-    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.35s ease;
-  perspective: 1200px;
 }
 
-.panel-modal.is-open {
-  transform: translate(-50%, -50%) scale(1) rotateX(0deg);
+.panel-modal-shell.is-open .panel-modal.is-open {
+  transform: scale(1);
   opacity: 1;
   pointer-events: auto;
 }
 
 .panel-modal-body {
-  max-height: min(88vh, 900px);
+  max-height: min(72vh, 760px);
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -280,13 +294,16 @@ button {
     text-align: center;
   }
 
+  .panel-modal-shell {
+    padding: 4.5rem 0.65rem 5.5rem;
+  }
+
   .panel-modal {
     width: calc(100vw - 1.25rem);
-    max-height: calc(100dvh - 6rem);
   }
 
   .panel-modal-body {
-    max-height: calc(100dvh - 6rem);
+    max-height: min(65dvh, 680px);
     padding: 1rem;
     padding-top: 2.25rem;
   }
@@ -298,6 +315,17 @@ button {
 
   .interaction-hint {
     bottom: 3.85rem;
+  }
+
+  .camera-pan-controls {
+    padding: 0 0.35rem;
+    top: 48%;
+  }
+
+  .camera-pan-btn {
+    width: 2.15rem;
+    height: 2.15rem;
+    font-size: 0.72rem;
   }
 
   .discovery-panel {
@@ -358,13 +386,91 @@ button {
 
 .nav,
 .discovery-panel,
-.mobile-scroll-nav {
+.mobile-scroll-nav,
+.camera-pan-btn {
   pointer-events: auto;
 }
 
 .panel-backdrop.is-open,
-.panel-modal.is-open {
+.panel-modal-shell.is-open .panel-modal.is-open {
   pointer-events: auto;
+}
+
+/* Workbench camera pan arrows */
+.camera-pan-controls {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-10%);
+  z-index: 12;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.65rem;
+  pointer-events: none;
+}
+
+.camera-pan-btn {
+  pointer-events: auto;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: grid;
+  place-items: center;
+  border-radius: 0;
+  border: 2px solid var(--accent-2);
+  border-bottom-width: 4px;
+  border-bottom-color: #4a3080;
+  background: linear-gradient(180deg, rgba(107, 92, 231, 0.45) 0%, rgba(42, 24, 72, 0.9) 100%);
+  color: var(--crt-green);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #1a0f2e;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.1s step-end;
+}
+
+.camera-pan-btn:hover:not(:disabled) {
+  border-color: var(--crt-green);
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
+.camera-pan-btn:active:not(:disabled) {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+}
+
+.camera-pan-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.camera-reset-control {
+  position: fixed;
+  left: 50%;
+  bottom: 5.15rem;
+  transform: translateX(-50%);
+  z-index: 12;
+  pointer-events: none;
+}
+
+.camera-reset-btn {
+  pointer-events: auto;
+  font-size: 1rem;
+  line-height: 0.9;
+}
+
+@media (max-width: 768px) {
+  .camera-reset-control {
+    bottom: 4.35rem;
+  }
+
+  .camera-reset-btn {
+    width: 2.15rem;
+    height: 2.15rem;
+    font-size: 0.85rem;
+  }
 }
 
 .section {

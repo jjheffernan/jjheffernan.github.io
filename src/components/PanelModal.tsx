@@ -28,22 +28,26 @@ export function PanelModal() {
         aria-hidden={!open}
       />
       <div
-        className={`panel-modal glass glass-panel${open ? ' is-open' : ''}`}
-        role="dialog"
-        aria-modal="true"
+        className={`panel-modal-shell${open ? ' is-open' : ''}`}
         aria-hidden={!open}
-        aria-label={activePanel ? PANEL_TITLES[activePanel] : undefined}
       >
-        {activePanel && (
-          <>
-            <button className="panel-modal-close" onClick={closePanel} aria-label="Close panel">
-              ×
-            </button>
-            <div className="panel-modal-body">
-              <PanelContent id={activePanel} year={year} />
-            </div>
-          </>
-        )}
+        <div
+          className={`panel-modal glass glass-panel${open ? ' is-open' : ''}`}
+          role="dialog"
+          aria-modal="true"
+          aria-label={activePanel ? PANEL_TITLES[activePanel] : undefined}
+        >
+          {activePanel && (
+            <>
+              <button className="panel-modal-close" onClick={closePanel} aria-label="Close panel">
+                ×
+              </button>
+              <div className="panel-modal-body">
+                <PanelContent id={activePanel} year={year} />
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </>
   )
