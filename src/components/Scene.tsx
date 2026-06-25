@@ -6,6 +6,7 @@ import { PartsBins } from './garage/PartsBins'
 import { ProjectArtifacts } from './garage/ProjectArtifacts'
 import { DustMotes } from './garage/DustMotes'
 import { RetroProps } from './garage/RetroProps'
+import { KenneyFloorClutter } from './garage/KenneyFloorClutter'
 import { WallPanels } from './panels/WallPanels'
 import { CameraRig } from './CameraRig'
 import { BENCH_Y } from './garage/constants'
@@ -22,6 +23,7 @@ export function Scene() {
       <hemisphereLight args={['#9d8cff', '#2a1838', 0.55]} />
 
       <GarageEnvironment />
+      <KenneyFloorClutter />
       <WallPanels />
 
       <group position={[0, BENCH_Y, 0]}>
