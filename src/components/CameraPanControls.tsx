@@ -7,8 +7,8 @@ export function CameraPanControls() {
 
   if (activePanel) return null
 
-  const atMin = panAngle <= -0.84
-  const atMax = panAngle >= 0.84
+  const atMin = panAngle >= 0.84
+  const atMax = panAngle <= -0.84
   const atRest = Math.abs(panAngle) < 0.01
 
   return (
