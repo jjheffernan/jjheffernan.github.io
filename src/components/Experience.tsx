@@ -5,7 +5,7 @@ export function Experience() {
   return (
     <div className="canvas-root">
       <Canvas
-        camera={{ position: [0, 1.45, 3.35], fov: 52 }}
+        camera={{ position: [0, 1.2, 3.23], fov: 54 }}
         dpr={[1, 1.5]}
         gl={{ antialias: true, powerPreference: 'high-performance' }}
         shadows
