@@ -113,10 +113,10 @@ const variants: ArtifactProps['variant'][] = ['django', 'rust', 'rustpi', 'ardui
 export function ProjectArtifacts() {
   const artifacts = useMemo(() => {
     const layouts: Array<[number, number, number, number]> = [
-      [-3.8, 0.02, 0.5, 0.4],
-      [-1.4, 0.03, -0.2, -0.3],
-      [1.2, 0.02, 0.35, 0.6],
-      [3.4, 0.025, -0.1, -0.5],
+      [-4.7, 0.02, 0.12, 0.35],
+      [2.75, 0.03, -0.42, -0.25],
+      [4.45, 0.02, 0.28, 0.55],
+      [-2.05, 0.025, 0.92, -0.12],
     ]
     return projects.map((project, i) => {
       const [x, y, z, ry] = layouts[i] ?? [0, 0.1, 0, 0]

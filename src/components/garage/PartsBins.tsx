@@ -57,11 +57,11 @@ function PartsBin({ id, title, position, color }: BinProps) {
 
 export function PartsBins() {
   const bins = useMemo(() => {
-    const startX = -2.8
-    const gap = 1.35
+    const startX = -5.1
+    const gap = 1.28
     return skillCategories.map((category, i) => ({
       ...category,
-      position: [startX + i * gap, 0.02, -0.9] as [number, number, number],
+      position: [startX + i * gap, 0.02, -0.28] as [number, number, number],
     }))
   }, [])
 

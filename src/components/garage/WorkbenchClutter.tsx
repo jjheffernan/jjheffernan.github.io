@@ -10,14 +10,14 @@ type ClutterItem = {
 const clutter: ClutterItem[] = [
   { position: [-5.8, 0.08, 0.9], type: 'mug' },
   { position: [-4.6, 0.06, -0.8], type: 'cable', rotation: [0, 0.8, 0] },
-  { position: [-3.8, 0.05, 1.2], type: 'wrench', rotation: [0, -0.4, Math.PI / 2] },
+  { position: [-5.45, 0.05, 1.05], type: 'wrench', rotation: [0, -0.4, Math.PI / 2] },
   { position: [3.2, 0.1, 1.1], type: 'filament' },
   { position: [4.8, 0.08, -0.5], type: 'multimeter', rotation: [0, -0.6, 0] },
   { position: [5.6, 0.06, 0.7], type: 'spray' },
-  { position: [-2.8, 0.07, -1.3], type: 'part', rotation: [0.2, 0.5, 0] },
-  { position: [2.5, 0.05, -1.4], type: 'cable', rotation: [0, -1.2, 0] },
-  { position: [0.8, 0.06, 1.35], type: 'solder' },
-  { position: [-1.2, 0.05, 0.95], type: 'pliers', rotation: [0, 0.3, 0] },
+  { position: [-5.75, 0.07, -0.55], type: 'part', rotation: [0.2, 0.5, 0] },
+  { position: [3.85, 0.05, -0.75], type: 'cable', rotation: [0, -1.2, 0] },
+  { position: [1.55, 0.06, 1.22], type: 'solder' },
+  { position: [2.15, 0.05, 1.12], type: 'pliers', rotation: [0, 0.3, 0] },
   { position: [6.2, 0.55, -2.2], type: 'helmet', rotation: [0, -0.5, 0] },
   { position: [-6.5, 0.06, -1.1], type: 'part', rotation: [0, 1.1, 0.1] },
   { position: [4.2, 0.07, 0.2], type: 'wrench', rotation: [Math.PI, 0.2, Math.PI / 2] },
@@ -122,9 +122,9 @@ export function WorkbenchClutter() {
         <mesh
           key={`screw-${i}`}
           position={[
-            -6 + Math.sin(i * 2.1) * 5.5,
+            -5.8 + (i % 6) * 2.1,
             0.01,
-            -1.2 + Math.cos(i * 1.7) * 2.2,
+            -1.05 + Math.floor(i / 6) * 0.55 + (i % 3) * 0.18,
           ]}
           rotation={[Math.PI / 2, i * 0.7, 0]}
         >
